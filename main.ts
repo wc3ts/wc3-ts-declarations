@@ -134,5 +134,5 @@ parsedFunctions.forEach(func => {
     functionString += `\n\n${docComment}declare function ${func.identifier}(${parameters}): ${returnType};`;
 });
 
+fs.mkdirSync("dist");
 fs.writeFileSync("dist/wc3.d.ts", typeString + enumString + varrableString + functionString);
-
