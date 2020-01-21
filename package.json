@@ -1,5 +1,5 @@
 {
-  "name": "wc3-ts-definitions",
+  "name": "wc3-ts-declarations",
   "version": "0.0.0",
   "description": "",
   "files": [
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wc3-ts/wc3-ts-definitions.git"
+    "url": "git+https://github.com/wc3-ts/wc3-ts-declarations.git"
   },
   "author": "wc3-ts",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wc3-ts/wc3-ts-definitions/issues"
+    "url": "https://github.com/wc3-ts/wc3-ts-declarations/issues"
   },
-  "homepage": "https://github.com/wc3-ts/wc3-ts-definitions#readme",
+  "homepage": "https://github.com/wc3-ts/wc3-ts-declarations#readme",
   "devDependencies": {
     "@types/node": "^13.1.8",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
@@ -34,7 +34,5 @@
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   },
-  "dependencies": {
-    "eslint-config-prettier": "^6.9.0"
-  }
+  "dependencies": {}
 }
