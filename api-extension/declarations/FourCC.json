@@ -1,11 +1,11 @@
 {
     "kind": "function",
     "identifier": "FourCC",
-    "description": "Generates a four character code.",
-    "isConstant": "boolean",
+    "description": "see docs dir",
+    "isConstant": false,
     "parameters": [
         {
-            "identifier": "code",
+            "identifier": "fourCharacterCode",
             "type": "string"
         }
     ],

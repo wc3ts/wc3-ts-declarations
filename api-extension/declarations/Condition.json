@@ -1,0 +1,13 @@
+{
+    "kind": "function",
+    "identifier": "Condition",
+    "description": "see docs dir",
+    "isConstant": false,
+    "parameters": [
+        {
+            "identifier": "condition",
+            "type": "() => boolean"
+        }
+    ],
+    "returnType": "conditionfunc"
+}

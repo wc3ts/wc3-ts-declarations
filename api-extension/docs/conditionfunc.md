@@ -1,0 +1,1 @@
+conditionfunc inherits from boolexpr and can be created with {@link Condition}

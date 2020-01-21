@@ -1,0 +1,1 @@
+Generates a four character code.
