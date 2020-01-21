@@ -1,7 +1,11 @@
-export const jTypeRegex = /(?<pre_comment>(?:\/\/.*\s+)+)?type\s+(?<name>\w+)\s+extends\s+(?<parent>\w+)(?<post_comment>[^\S\r\n]+\/\/.*)?/g
-export const jFunctionRegex = /(?<pre_comment>(?:\/\/.*\s+)+)?(?<constant>constant)?\s+native\s+(?<name>\w+)\s+takes\s+(?<parameters>.+)returns\s+(?<return_type>\w+)(?<post_comment>[^\S\r\n]+\/\/.*)?/g
-export const jParameterRegex = /((?<type>\w+) (?<name>\w+))/g
-export const jConstantRegex = /(?<pre_comment>(?:\/\/.*\s+)+)?constant\s+(?<type>\w+)\s+(?<name>\w+)\s+=\s+(?<value>[\w()''""]+)(?<post_comment>[^\S\r\n]+\/\/.*)?/g
+// WTF
+const preCommentRegexString = `(?<pre_comment>^\\s*(?:\\/\\/.*\\s+)+)?^\\s*`;
+const postCommentRegexString = `(?<post_comment>[^\\S\\r\\n]+\\/\\/.*)?(?:\\n|$)`;
+
+export const jTypeRegex = new RegExp(`${preCommentRegexString}type\\s+(?<name>\\w+)\\s+extends\\s+(?<parent>\\w+)${postCommentRegexString}`, "gm");
+export const jFunctionRegex = new RegExp(`${preCommentRegexString}(?:(?<constant>constant)\\s+)?(?:(?:(?:native)|(?:function))\\s+)(?<name>\\w+)\\s+takes\\s+(?<parameters>.+)returns\\s+(?<return_type>\\w+)${postCommentRegexString}`, "gm");
+export const jParameterRegex = /((?<type>\w+) (?<name>\w+))/gm
+export const jVariableRegex = new RegExp(`${preCommentRegexString}(?:(?<constant>constant)\\s+)?(?<type>\\w+)\\s+(?:(?<array>array)\\s+)?(?<name>\\w+)\\s+(?:=\\s+(?<value>[\\w()''""]+))?${postCommentRegexString}`, "gm");
 
 export interface JassEntry {
     description: string,
@@ -18,14 +22,16 @@ export interface JassParameter {
 }
 
 export interface JassFunction extends JassEntry  {
-    constant: boolean,
+    isConstant: boolean,
     parameters: Array<JassParameter>,
     returnType: string
 }
 
-export interface JassConstant extends JassEntry {
+export interface JassVariable extends JassEntry {
     type: string,
-    value: string
+    value?: string,
+    isArray: boolean,
+    isConstant: boolean,
 }
 
 export const JassCoreTypes = ["boolean", "real", "integer", "string"];

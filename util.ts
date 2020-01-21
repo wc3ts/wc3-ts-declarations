@@ -10,13 +10,13 @@ export function groupBy<T>(arr: Array<T>, criteria: ((element: T) => string) | s
 };
 
 export function combineComments(preComment: string | undefined, postComment: string | undefined): string {
-    // TODO better removal of slashes
-    preComment = preComment ? preComment : ""
-    postComment = postComment ? postComment : ""
-    return `${preComment}\n${postComment}`.replace("// ", "").replace("//", "");
+    // remove CRLF because its messingwith the second regex
+    preComment = preComment ? preComment.replace(/\r/g, "").replace(/^(\s*)\/\/(\s*)\*?(\s*)($)?/gm, "") : ""
+    postComment = postComment ? postComment.replace(/\r/g, "").replace(/^(\s*)\/\/(\s*)\*?(\s*)($)?/gm, "") : ""
+    return `${preComment}\n${postComment}`
 }
 
-export function createDoccomment(text: string): string {
+export function createDocComment(text: string): string {
     text = text.replace("<pre>", "```");
     text = text.replace("</pre>", "```");
     text = text.replace("<br/>", "\n");
@@ -24,6 +24,9 @@ export function createDoccomment(text: string): string {
     text = text.replace("<br>", "\n");
 
     text = text.replace("'''", "\"");
+
+    // remove lines that only contain ascii art (e.g. ============ or ************)
+    text = text.replace(/^[\/\/=*][\/\/=* ]+(\n|$)/gm, "");
 
     text = text.trim();
 
@@ -34,5 +37,13 @@ export function createDoccomment(text: string): string {
     {
         return "";
     }
-    return `/**\n * ${text.replace("\n", "\n * ")} \n */\n`;
+
+    text = `/**\n * ${text.replace(/\n/g, "\n * ")} \n */\n`;
+
+    return text;
+}
+
+export function indentLines(text: string, indent: number) {
+    const tabs = '\t'.repeat(indent);
+    return tabs + text.trimEnd().replace(/\n/g, `\n${tabs}`)
 }
