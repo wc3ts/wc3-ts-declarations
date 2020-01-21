@@ -3,6 +3,11 @@
     "identifier": "FourCC",
     "description": "Generates a four character code.",
     "isConstant": "boolean",
-    "parameters": [],
+    "parameters": [
+        {
+            "identifier": "code",
+            "type": "string"
+        }
+    ],
     "returnType": "number"
 }

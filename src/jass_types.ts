@@ -15,8 +15,7 @@ export enum JassEntryKind
 	{
 	JassType = 'type',
 	JassFunction = 'function',
-	JassVariable = 'variable',
-	JassParameter = 'parameter',
+	JassVariable = 'variable'
 }
 
 export interface JassEntry
@@ -51,7 +50,6 @@ export interface JassVariable extends JassEntry
 
 export interface JassParameter
 {
-	kind: JassEntryKind.JassParameter,
 	identifier: string,
 	type: string
 }

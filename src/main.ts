@@ -140,8 +140,8 @@ for (const constantType in constantGroups)
 				const member = indentLines(`${docComment}${curr.identifier},`, 1);
 				return `${prev}\n\n${member}`;
 			}, '');
-			const docComment = createDocComment(`${database[constantType].description}\n@membersOnly`);
-			enumString += `\n\n${docComment}\ndeclare enum ${constantType} {${constantMembers} \n}`;
+			const docComment = createDocComment(`${database[constantType].description}\n@compileMembersOnly`);
+			enumString += `\n\n${docComment}declare enum ${constantType} {${constantMembers} \n}`;
 		}
 	}
 }
@@ -191,4 +191,4 @@ if (!fs.existsSync('dist'))
 {
 	fs.mkdirSync('dist');
 }
-fs.writeFileSync('dist/wc3.d.ts', typeString + enumString + varrableString + functionString);
+fs.writeFileSync('dist/wc3.d.ts', '/** @noSelfInFile */\n' + typeString + enumString + varrableString + functionString);
