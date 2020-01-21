@@ -11,25 +11,30 @@ export const jVariableRegex = new RegExp(`${preCommentRegexString}(?:(?<constant
 
 /* eslint-enable */
 
+export enum JassEntryKind
+	{
+	JassType = 'type',
+	JassFunction = 'function',
+	JassVariable = 'variable',
+	JassParameter = 'parameter',
+}
+
 export interface JassEntry
 {
+	kind: JassEntryKind,
 	description: string,
 	identifier: string,
 }
 
 export interface JassType extends JassEntry
 {
+	kind: JassEntryKind.JassType,
 	parent?: string
-}
-
-export interface JassParameter
-{
-	identifier: string,
-	type: string
 }
 
 export interface JassFunction extends JassEntry
 {
+	kind: JassEntryKind.JassFunction,
 	isConstant: boolean,
 	parameters: JassParameter[],
 	returnType: string
@@ -37,10 +42,18 @@ export interface JassFunction extends JassEntry
 
 export interface JassVariable extends JassEntry
 {
+	kind: JassEntryKind.JassVariable,
 	type: string,
 	value?: string,
 	isArray: boolean,
 	isConstant: boolean,
+}
+
+export interface JassParameter
+{
+	kind: JassEntryKind.JassParameter,
+	identifier: string,
+	type: string
 }
 
 export const JassCoreTypes = [

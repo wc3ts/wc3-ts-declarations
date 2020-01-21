@@ -1,0 +1,8 @@
+{
+    "kind": "function",
+    "identifier": "FourCC",
+    "description": "Generates a four character code.",
+    "isConstant": "boolean",
+    "parameters": [],
+    "returnType": "number"
+}

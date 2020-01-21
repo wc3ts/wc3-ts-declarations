@@ -11,7 +11,8 @@ import {
 	jTypeRegex,
 	JassEntry,
 	JassCoreTypes,
-	mapJasstoTsType
+	mapJasstoTsType,
+	JassEntryKind
 } from './jass_types';
 import {combineComments, groupBy, createDocComment, indentLines} from './util';
 
@@ -21,6 +22,7 @@ function parseTypes(input:string)
 	const parsedTypes = typeMatches.map(match =>
 	{
 		return {
+			kind: JassEntryKind.JassType,
 			identifier: match.groups['name'],
 			parent: match.groups['parent'],
 			description: combineComments(match.groups['pre_comment'], match.groups['post_comment'])
@@ -35,6 +37,7 @@ function parseFunctions(input: string)
 	const parsedFunctions = functionMatches.map(match =>
 	{
 		return {
+			kind: JassEntryKind.JassFunction,
 			isConstant: match.groups['constant'] !== undefined,
 			parameters: [...match.groups['parameters'].matchAll(jParameterRegex)]
 				.map(paramMatch => ({
@@ -55,6 +58,7 @@ function parseVariables(input: string)
 	const parsedConstants = constantMatches.map(match =>
 	{
 		return {
+			kind: JassEntryKind.JassVariable,
 			identifier: match.groups['name'],
 			value: match.groups['value'],
 			type: match.groups['type'],
@@ -66,11 +70,14 @@ function parseVariables(input: string)
 	return parsedConstants;
 }
 
+// Database
+const database: Record<string, JassEntry> = {};
 
 let jCommon = fs.readFileSync('jass-api/common.j').toString();
 let jBlizzard = fs.readFileSync('jass-api/Blizzard.j').toString();
 
 const parsedFunctions = parseFunctions(jCommon).concat(parseFunctions(jBlizzard));
+parsedFunctions.forEach(e => database[e.identifier] = e);
 
 /*
  * Remove functions for variable and type parsing
@@ -81,17 +88,19 @@ jBlizzard = jBlizzard.replace(/^\s*function(.|\s)*?endfunction(\n|$)/gm, '');
 
 const parsedVariables = parseVariables(jCommon).concat(parseVariables(jBlizzard));
 const parsedTypes = parseTypes(jCommon).concat(parseTypes(jBlizzard));
-parsedTypes.unshift({identifier: 'handle', description: ''});
-
-// Database
-const database: Record<string, JassEntry> = {};
 parsedTypes.forEach(e => database[e.identifier] = e);
-parsedFunctions.forEach(e => database[e.identifier] = e);
+
 parsedVariables.forEach(e => database[e.identifier] = e);
 
-fs.readdirSync('api-docs').forEach(doc =>
+fs.readdirSync('api-extension/declarations').forEach(doc =>
 {
-	database[path.basename(doc, '.md')].description = fs.readFileSync(path.join('api-docs', doc)).toString();
+	database[path.basename(doc, '.json')]
+		= JSON.parse(fs.readFileSync(path.join('api-extension/declarations', doc)).toString());
+});
+
+fs.readdirSync('api-extension/docs').forEach(doc =>
+{
+	database[path.basename(doc, '.md')].description = fs.readFileSync(path.join('api-extension/docs', doc)).toString();
 });
 
 function createDocCommentForVariable(variable: JassVariable)
@@ -99,8 +108,11 @@ function createDocCommentForVariable(variable: JassVariable)
 	return createDocComment(`${variable.description}\n@default ${variable.value}`);
 }
 
+const groupedDatabase = groupBy(Object.values(database), 'kind');
+
 // Generate enums and constants
-const constantGroups = groupBy(parsedVariables.filter(v => v.isConstant), 'type');
+const constantGroups = groupBy((groupedDatabase[JassEntryKind.JassVariable] as JassVariable[])
+	.filter(v => v.isConstant), 'type');
 
 let enumString: string = '';
 
@@ -137,7 +149,7 @@ for (const constantType in constantGroups)
 // Generate variables
 let varrableString: string = '';
 
-parsedVariables.filter(v => !v.isConstant).forEach(variable =>
+(groupedDatabase[JassEntryKind.JassVariable] as JassVariable[]).filter(v => !v.isConstant).forEach(variable =>
 {
 	let type = mapJasstoTsType(variable.type);
 	if (variable.isArray)
@@ -151,7 +163,7 @@ parsedVariables.filter(v => !v.isConstant).forEach(variable =>
 // Generate interfaces
 let typeString: string = '';
 
-parsedTypes.forEach(type =>
+(groupedDatabase[JassEntryKind.JassType] as JassType[]).forEach(type =>
 {
 	if (!constantGroups[type.identifier])
 	{
@@ -165,7 +177,7 @@ parsedTypes.forEach(type =>
 let functionString: string = '';
 
 // Generate functions
-parsedFunctions.forEach(func =>
+(groupedDatabase[JassEntryKind.JassFunction] as JassFunction[]).forEach(func =>
 {
 	const parameters = func.parameters
 		.map(parameter => `${parameter.identifier}: ${mapJasstoTsType(parameter.type)}`)
