@@ -6,19 +6,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-      - run: npm ci
-      - run: npm run lint
-        env:
-          CI: true
-
-  test:
+  build:
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -33,3 +21,32 @@ jobs:
           node-version: 12.13.1
       - run: npm ci
       - run: npm run build
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - run: npm ci
+      - run: npm run lint
+        env:
+          CI: true
+
+  # no tests yet
+  # test:
+  #   name: Test on ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest]
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js 12.13.1
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12.13.1
+  #     - run: npm ci
+  #     - run: npm run test

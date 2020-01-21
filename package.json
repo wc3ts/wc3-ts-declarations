@@ -11,9 +11,10 @@
     "release-major": "npm version major",
     "release-minor": "npm version minor",
     "release-patch": "npm version patch",
-    "preversion": "npm run build && npm test",
+    "preversion": "npm run build && npm run lint && npm test",
     "postversion": "git push && git push --tags",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "test": ""
   },
   "repository": {
     "type": "git",
