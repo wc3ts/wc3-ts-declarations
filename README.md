@@ -1,1 +1,0 @@
-# wc3-ts-definitions
