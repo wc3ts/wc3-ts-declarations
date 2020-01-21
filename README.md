@@ -1,6 +1,10 @@
 ## Warcraft 3 Typescript Definitions
 
-### Usage:
+### Installation:
+
+1. `npm install --save wc3-ts-definitions`
+
+### Development:
 
 1. Run `npm install`
 2. Run `npm run build`
