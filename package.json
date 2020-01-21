@@ -1,25 +1,39 @@
 {
   "name": "wc3-ts-definitions",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "files": [
+    "dist/wc3.d.ts"
+  ],
+  "types": "dist/wc3.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "ts-node main.ts"
+    "build": "ts-node src/main.ts",
+    "release-major": "npm version major",
+    "release-minor": "npm version minor",
+    "release-patch": "npm version patch",
+    "preversion": "npm run build && npm test",
+    "postversion": "git push && git push --tags",
+    "lint": "eslint src/**/*.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lolleko/wc3-ts-definitions.git"
+    "url": "git+https://github.com/wc3-ts/wc3-ts-definitions.git"
   },
-  "author": "",
+  "author": "wc3-ts",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lolleko/wc3-ts-definitions/issues"
+    "url": "https://github.com/wc3-ts/wc3-ts-definitions/issues"
   },
-  "homepage": "https://github.com/lolleko/wc3-ts-definitions#readme",
+  "homepage": "https://github.com/wc3-ts/wc3-ts-definitions#readme",
   "devDependencies": {
     "@types/node": "^13.1.8",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "eslint": "^6.8.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^6.9.0"
   }
 }
