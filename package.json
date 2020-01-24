@@ -1,6 +1,6 @@
 {
   "name": "wc3-ts-declarations",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "files": [
     "dist/wc3.d.ts"
