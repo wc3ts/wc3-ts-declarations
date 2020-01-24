@@ -16,6 +16,7 @@ Wether to show a dialog with the header "victory" and a quit/continue button.
 Wether to show the scoreboard after leaving the game.
  
 @example
+```typescript
 // Declare the owner of the Killing unit victorious and show victory dialog and scoreboard
 CustomVictoryBJ(GetOwningPlayer(GetKillingUnitBJ()), true, true);
- 
+ ```

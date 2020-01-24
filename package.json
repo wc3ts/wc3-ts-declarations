@@ -14,24 +14,26 @@
     "preversion": "npm run build && npm run lint && npm test",
     "postversion": "git push && git push --tags",
     "lint": "eslint src/**/*.ts",
-    "test": ""
+    "test": "",
+    "generate-docs": "typedoc --includeDeclarations --inputFiles dist/wc3.d.ts --excludeExternals --ignoreCompilerErrors --hideGenerator --exclude src --theme minimal --module none --mode file"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wc3-ts/wc3-ts-declarations.git"
+    "url": "git+https://github.com/wc3ts/wc3-ts-declarations.git"
   },
   "author": "wc3-ts",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wc3-ts/wc3-ts-declarations/issues"
+    "url": "https://github.com/wc3ts/wc3-ts-declarations/issues"
   },
-  "homepage": "https://github.com/wc3-ts/wc3-ts-declarations#readme",
+  "homepage": "https://github.com/wc3ts/wc3-ts-declarations#readme",
   "devDependencies": {
     "@types/node": "^13.1.8",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
     "ts-node": "^8.6.2",
+    "typedoc": "^0.16.8",
     "typescript": "^3.7.5"
   },
   "dependencies": {}
