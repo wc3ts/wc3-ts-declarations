@@ -1,1 +1,1 @@
-Generates a four character code.
+Generates a four character code from a string.
