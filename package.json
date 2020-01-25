@@ -15,7 +15,7 @@
     "postversion": "git push && git push --tags",
     "lint": "eslint src/**/*.ts",
     "test": "",
-    "generate-docs": "typedoc --includeDeclarations --inputFiles dist/wc3.d.ts --excludeExternals --ignoreCompilerErrors --hideGenerator --exclude src --theme minimal --module none --mode file"
+    "generate-docs": "cat /dev/null > node_modules/typedoc-default-themes/bin/minimal/partials/index.hbs && typedoc --includeDeclarations --inputFiles dist/wc3.d.ts --excludeExternals --ignoreCompilerErrors --hideGenerator --exclude src --theme minimal --module none --mode file"
   },
   "repository": {
     "type": "git",
