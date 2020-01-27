@@ -191,4 +191,26 @@ if (!fs.existsSync('dist'))
 {
 	fs.mkdirSync('dist');
 }
-fs.writeFileSync('dist/wc3.d.ts', '/** @noSelfInFile */\n' + typeString + enumString + varrableString + functionString);
+
+// TODO move this to a file
+const declarationHeader = `/** @noSelfInFile */
+
+/**
+ * @luaTable
+ * 
+ * LuaTable is similar to typescripts \`Record<K, V>\`.
+ * LuaTable instances are treated like a native Lua table.
+ * This can be used to avoid the overhead of \`Map<K, V>\` and \`Set<T>\`.
+ * 
+ * For more information:
+ * 
+ * @see https://github.com/TypeScriptToLua/TypeScriptToLua/wiki/Compiler-Annotations#luaTable
+ * 
+*/
+declare class LuaTable<K extends {} = {}, V = any> {
+    readonly length: number;
+    set(key: K, value: V | undefined): void;
+    get(key: K): V | undefined;
+}`;
+
+fs.writeFileSync('dist/wc3.d.ts', declarationHeader + typeString + enumString + varrableString + functionString);
